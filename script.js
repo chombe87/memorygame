@@ -156,6 +156,7 @@ const movesEl = document.querySelector("[data-moves]");
 const matchesEl = document.querySelector("[data-matches]");
 const timerEl = document.querySelector("[data-timer]");
 const scoreEl = document.querySelector("[data-score]");
+const totalScoreEl = document.querySelector("[data-total-score]");
 const levelEl = document.querySelector("[data-level]");
 const leagueButtons = document.querySelectorAll("[data-league]");
 const resetButtons = document.querySelectorAll("[data-restart]");
@@ -163,7 +164,6 @@ const reshuffleButtons = document.querySelectorAll("[data-restart-secondary], [d
 const victoryEl = document.querySelector("[data-victory]");
 const victoryTitleEl = document.querySelector("[data-victory-title]");
 const victoryCopyEl = document.querySelector("[data-victory-copy]");
-const closeVictoryBtn = document.querySelector("[data-close-victory]");
 const nextLevelBtn = document.querySelector("[data-next-level]");
 
 const levels = [
@@ -178,6 +178,7 @@ const PASS_SCORE = 1200;
 let activePairs = [];
 let activeLeague = "epl";
 let currentLevelIndex = 0;
+let totalScore = 0;
 let state = {
   deck: [],
   first: null,
@@ -246,6 +247,7 @@ function updateHud() {
   levelEl.textContent = `${currentLevelIndex + 1} / ${levels.length}`;
   state.score = computeScore();
   scoreEl.textContent = state.score;
+  totalScoreEl.textContent = totalScore;
 }
 
 function createCardElement(card) {
@@ -277,16 +279,18 @@ function revealVictory() {
   const level = levels[currentLevelIndex];
   const passed = state.score >= PASS_SCORE;
   const isLastLevel = currentLevelIndex === levels.length - 1;
+  totalScore += state.score;
   victoryTitleEl.textContent = "Sve je povezano!";
   victoryCopyEl.textContent = `Liga: ${leagueName}. Nivo ${currentLevelIndex + 1} (${level.cols}x${level.rows}). Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}. Potrebno ${PASS_SCORE} za prolaz.`;
   nextLevelBtn.hidden = !(passed && !isLastLevel);
+  updateHud();
   victoryEl.hidden = false;
 }
 
 function checkForWin() {
   if (state.matches === activePairs.length) {
     stopTimer();
-    revealVictory();
+    setTimeout(revealVictory, 2000);
   }
 }
 
@@ -299,6 +303,12 @@ function resetPicks() {
 function handleMatchSuccess() {
   state.first.classList.add("matched");
   state.second.classList.add("matched");
+  state.first.classList.add("hit");
+  state.second.classList.add("hit");
+  setTimeout(() => {
+    state.first?.classList.remove("hit");
+    state.second?.classList.remove("hit");
+  }, 700);
   state.matches += 1;
   updateHud();
   resetPicks();
@@ -306,9 +316,13 @@ function handleMatchSuccess() {
 }
 
 function handleMatchFail() {
+  state.first.classList.add("miss");
+  state.second.classList.add("miss");
   setTimeout(() => {
     state.first.classList.remove("flipped");
     state.second.classList.remove("flipped");
+    state.first.classList.remove("miss");
+    state.second.classList.remove("miss");
     resetPicks();
   }, 800);
 }
@@ -378,6 +392,7 @@ function setLeague(leagueKey) {
   if (!leagues[leagueKey]) return;
   activeLeague = leagueKey;
   currentLevelIndex = 0;
+  totalScore = 0;
   leagueButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.league === leagueKey);
   });
@@ -399,6 +414,7 @@ function startGame() {
 resetButtons.forEach((button) => {
   button.addEventListener("click", () => {
     currentLevelIndex = 0;
+    totalScore = 0;
     startGame();
   });
 });
@@ -409,10 +425,6 @@ reshuffleButtons.forEach((button) => {
 
 leagueButtons.forEach((button) => {
   button.addEventListener("click", () => setLeague(button.dataset.league));
-});
-
-closeVictoryBtn?.addEventListener("click", () => {
-  victoryEl.hidden = true;
 });
 
 nextLevelBtn?.addEventListener("click", () => {
