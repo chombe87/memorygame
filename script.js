@@ -150,6 +150,32 @@ const leagues = {
       { club: "Valencia", crest: "assets/crests/valencia.png", stadium: "Mestalla", stadiumImage: "assets/stadiums/valencia.JPG" },
       { club: "Villarreal", crest: "assets/crests/villarreal.svg", stadium: "Estadio de la Cerámica", stadiumImage: "assets/stadiums/villarreal.jpg" }
     ]
+  },
+  seriea: {
+    name: "Serie A",
+    logo: "assets/leagues/seriea.png",
+    pairs: [
+      { club: "Atalanta", crest: "assets/crests/atalanta.png", stadium: "Gewiss Stadium", stadiumImage: "assets/stadiums/atalanta.jpg" },
+      { club: "Bologna", crest: "assets/crests/bologna.png", stadium: "Stadio Renato Dall'Ara", stadiumImage: "assets/stadiums/bologna.jpg" },
+      { club: "Cagliari", crest: "assets/crests/cagliari.png", stadium: "Unipol Domus", stadiumImage: "assets/stadiums/cagliari.jpeg" },
+      { club: "Como", crest: "assets/crests/como.png", stadium: "Stadio Giuseppe Sinigaglia", stadiumImage: "assets/stadiums/como.jpg" },
+      { club: "Empoli", crest: "assets/crests/empoli.png", stadium: "Stadio Carlo Castellani", stadiumImage: "assets/stadiums/empoli.jpg" },
+      { club: "Fiorentina", crest: "assets/crests/fiorentina.png", stadium: "Stadio Artemio Franchi", stadiumImage: "assets/stadiums/fiorentina.jpg" },
+      { club: "Genoa", crest: "assets/crests/genoa.png", stadium: "Stadio Luigi Ferraris", stadiumImage: "assets/stadiums/genoa.jpg" },
+      { club: "Inter", crest: "assets/crests/inter.png", stadium: "San Siro", stadiumImage: "assets/stadiums/inter.jpg" },
+      { club: "Juventus", crest: "assets/crests/juventus.png", stadium: "Allianz Stadium", stadiumImage: "assets/stadiums/juventus.jpg" },
+      { club: "Lazio", crest: "assets/crests/lazio.png", stadium: "Stadio Olimpico", stadiumImage: "assets/stadiums/lazio.jpg" },
+      { club: "Lecce", crest: "assets/crests/lecce.png", stadium: "Stadio Via del Mare", stadiumImage: "assets/stadiums/lecce.jpg" },
+      { club: "Milan", crest: "assets/crests/milan.png", stadium: "San Siro", stadiumImage: "assets/stadiums/milan.jpg" },
+      { club: "Monza", crest: "assets/crests/monza.png", stadium: "U-Power Stadium", stadiumImage: "assets/stadiums/monza.jpg" },
+      { club: "Napoli", crest: "assets/crests/napoli.jpg", stadium: "Stadio Diego Armando Maradona", stadiumImage: "assets/stadiums/napoli.jpg" },
+      { club: "Parma", crest: "assets/crests/parma.png", stadium: "Stadio Ennio Tardini", stadiumImage: "assets/stadiums/parma.jpg" },
+      { club: "Roma", crest: "assets/crests/roma.png", stadium: "Stadio Olimpico", stadiumImage: "assets/stadiums/roma.jpg" },
+      { club: "Torino", crest: "assets/crests/torino.png", stadium: "Stadio Olimpico Grande Torino", stadiumImage: "assets/stadiums/torino.jpg" },
+      { club: "Udinese", crest: "assets/crests/udinese.png", stadium: "Dacia Arena", stadiumImage: "assets/stadiums/udinese.jpg" },
+      { club: "Venezia", crest: "assets/crests/venezia.png", stadium: "Stadio Pier Luigi Penzo", stadiumImage: "assets/stadiums/venezia.jpg" },
+      { club: "Verona", crest: "assets/crests/verona.png", stadium: "Stadio Marc'Antonio Bentegodi", stadiumImage: "assets/stadiums/verona.jpg" }
+    ]
   }
 };
 
@@ -175,12 +201,12 @@ const levels = [
   { cols: 4, rows: 4 },
   { cols: 5, rows: 4 }
 ];
-const PASS_SCORE = 1200;
 
 let activePairs = [];
 let activeLeague = "epl";
 let currentLevelIndex = 0;
 let totalScore = 0;
+let levelCompleteScore = 0;
 let state = {
   deck: [],
   first: null,
@@ -280,12 +306,11 @@ function revealVictory() {
   const timeText = formatTime(state.time);
   const leagueName = leagues[activeLeague]?.name ?? "Liga";
   const level = levels[currentLevelIndex];
-  const passed = state.score >= PASS_SCORE;
   const isLastLevel = currentLevelIndex === levels.length - 1;
-  totalScore += state.score;
+  levelCompleteScore = state.score;
   victoryTitleEl.textContent = "Sve je povezano!";
-  victoryCopyEl.textContent = `Liga: ${leagueName}. Nivo ${currentLevelIndex + 1} (${level.cols}x${level.rows}). Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}. Potrebno ${PASS_SCORE} za prolaz.`;
-  nextLevelBtn.hidden = !(passed && !isLastLevel);
+  victoryCopyEl.textContent = `Liga: ${leagueName}. Nivo ${currentLevelIndex + 1} (${level.cols}x${level.rows}). Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}.`;
+  nextLevelBtn.hidden = isLastLevel;
   updateHud();
   victoryEl.hidden = false;
 }
@@ -396,6 +421,7 @@ function setLeague(leagueKey) {
   activeLeague = leagueKey;
   currentLevelIndex = 0;
   totalScore = 0;
+  levelCompleteScore = 0;
   leagueButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.league === leagueKey);
   });
@@ -403,6 +429,7 @@ function setLeague(leagueKey) {
 }
 
 function startGame() {
+  levelCompleteScore = 0;
   resetState();
   victoryEl.hidden = true;
   activePairs = pickActivePairs();
@@ -418,6 +445,7 @@ resetButtons.forEach((button) => {
   button.addEventListener("click", () => {
     currentLevelIndex = 0;
     totalScore = 0;
+    levelCompleteScore = 0;
     startGame();
   });
 });
@@ -431,8 +459,8 @@ leagueButtons.forEach((button) => {
 });
 
 nextLevelBtn?.addEventListener("click", () => {
-  const passed = state.score >= PASS_SCORE;
-  if (!passed) return;
+  totalScore += levelCompleteScore;
+  levelCompleteScore = 0;
   currentLevelIndex = Math.min(levels.length - 1, currentLevelIndex + 1);
   startGame();
   victoryEl.hidden = true;
