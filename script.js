@@ -108,6 +108,32 @@ const leagues = {
       { club: "VfB Stuttgart", stadium: "MHPArena" },
       { club: "VfL Wolfsburg", stadium: "Volkswagen Arena" }
     ]
+  },
+  ligue1: {
+    name: "Ligue 1",
+    logo: "assets/leagues/ligue1.png",
+    tagLeft: "Klub",
+    tagRight: "Stadion",
+    pairs: [
+      { club: "Paris Saint-Germain", crest: "assets/crests/psg.png", stadium: "Parc des Princes", stadiumImage: "assets/stadiums/psg.jpg" },
+      { club: "AS Monaco", crest: "assets/crests/monaco.jpg", stadium: "Stade Louis-II", stadiumImage: "assets/stadiums/monaco.jpg" },
+      { club: "Olympique Marseille", crest: "assets/crests/marseille.png", stadium: "Stade Velodrome", stadiumImage: "assets/stadiums/marseille.png" },
+      { club: "Olympique Lyonnais", crest: "assets/crests/lyon.jpg", stadium: "Groupama Stadium", stadiumImage: "assets/stadiums/lyon.jpg" },
+      { club: "Lille OSC", crest: "assets/crests/lille.png", stadium: "Decathlon Arena – Stade Pierre-Mauroy", stadiumImage: "assets/stadiums/lille.jpg" },
+      { club: "RC Lens", crest: "assets/crests/lens.png", stadium: "Stade Bollaert-Delelis", stadiumImage: "assets/stadiums/lens.JPG" },
+      { club: "Stade Rennais", crest: "assets/crests/rennes.png", stadium: "Roazhon Park", stadiumImage: "assets/stadiums/rennes.jpg" },
+      { club: "OGC Nice", crest: "assets/crests/nice.png", stadium: "Allianz Riviera", stadiumImage: "assets/stadiums/nice.jpg" },
+      { club: "FC Nantes", crest: "assets/crests/nantes.png", stadium: "Stade de la Beaujoire", stadiumImage: "assets/stadiums/nantes.jpg" },
+      { club: "Stade de Reims", crest: "assets/crests/reims.png", stadium: "Stade Auguste-Delaune", stadiumImage: "assets/stadiums/reims.jpg" },
+      { club: "Montpellier HSC", crest: "assets/crests/montpellier.png", stadium: "Stade de la Mosson", stadiumImage: "assets/stadiums/montpellier.jpg" },
+      { club: "Toulouse FC", crest: "assets/crests/toulouse.png", stadium: "Stadium de Toulouse", stadiumImage: "assets/stadiums/toulouse.jpg" },
+      { club: "RC Strasbourg Alsace", crest: "assets/crests/strasbourg.png", stadium: "Stade de la Meinau", stadiumImage: "assets/stadiums/strasbourg.jpg" },
+      { club: "Le Havre AC", crest: "assets/crests/lehavre.png", stadium: "Stade Oceane", stadiumImage: "assets/stadiums/lehavre.jpg" },
+      { club: "AJ Auxerre", crest: "assets/crests/auxerre.jpg", stadium: "Stade de l'Abbe-Deschamps", stadiumImage: "assets/stadiums/auxerre.jpg" },
+      { club: "Angers SCO", crest: "assets/crests/angers.png", stadium: "Stade Raymond Kopa", stadiumImage: "" },
+      { club: "AS Saint-Etienne", crest: "assets/crests/saint-etienne.jpg", stadium: "Stade Geoffroy-Guichard", stadiumImage: "assets/stadiums/saint-etienne.jpg" },
+      { club: "Stade Brestois 29", crest: "assets/crests/brest.png", stadium: "Stade Francis-Le Ble", stadiumImage: "assets/stadiums/brest.JPG" }
+    ]
   }
 };
 
@@ -418,6 +444,7 @@ resetButtons.forEach((button) => {
     currentLevelIndex = 0;
     totalScore = 0;
     levelCompleteScore = 0;
+    levelHistory.length = 0;
     startGame();
   });
 });
