@@ -173,8 +173,8 @@ h1 {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(4, 1fr);
-  max-width: 780px;
-  width: min(92vw, 780px);
+  max-width: 560px;
+  width: min(90vw, 560px);
   margin: 0 auto;
 }
 
@@ -229,8 +229,8 @@ h1 {
 
 .card-back .label {
   font-weight: 700;
-  font-size: 16px;
-  line-height: 1.3;
+  font-size: clamp(13px, 3vw, 15px);
+  line-height: 1.25;
   color: #f5f8ff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
@@ -325,5 +325,20 @@ h1 {
 
   .card {
     aspect-ratio: 4 / 5;
+  }
+
+  .card-face.card-back {
+    padding: 12px;
+  }
+
+  .card-back .label {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .board {
+    max-width: 520px;
+    width: min(70vw, 520px);
   }
 }
