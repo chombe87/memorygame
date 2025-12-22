@@ -1,159 +1,65 @@
 const leagues = {
   epl: {
     name: "Premier League",
-    logo: "assets/leagues/epl.png",
+    logo: "assets/leagues/epl.svg",
+    tagLeft: "Klub",
+    tagRight: "Stadion",
     pairs: [
-      {
-        club: "Arsenal",
-        crest: "assets/crests/arsenal.svg",
-        stadium: "Emirates Stadium",
-        stadiumImage: "assets/stadiums/arsenal.jpg"
-      },
-      {
-        club: "Aston Villa",
-        crest: "assets/crests/aston-villa.svg",
-        stadium: "Villa Park",
-        stadiumImage: "assets/stadiums/aston-villa.jpg"
-      },
-      {
-        club: "Bournemouth",
-        crest: "assets/crests/bournemouth.svg",
-        stadium: "Vitality Stadium",
-        stadiumImage: "assets/stadiums/bournemouth.jpg"
-      },
-      {
-        club: "Brentford",
-        crest: "assets/crests/brentford.svg",
-        stadium: "Gtech Community Stadium",
-        stadiumImage: "assets/stadiums/brentford.jpg"
-      },
-      {
-        club: "Brighton & Hove Albion",
-        crest: "assets/crests/brighton.svg",
-        stadium: "Amex Stadium",
-        stadiumImage: "assets/stadiums/brighton.jpg"
-      },
-      {
-        club: "Burnley",
-        crest: "assets/crests/burnley.svg",
-        stadium: "Turf Moor",
-        stadiumImage: "assets/stadiums/burnley.jpg"
-      },
-      {
-        club: "Chelsea",
-        crest: "assets/crests/chelsea.svg",
-        stadium: "Stamford Bridge",
-        stadiumImage: "assets/stadiums/chelsea.jpg"
-      },
-      {
-        club: "Crystal Palace",
-        crest: "assets/crests/crystal-palace.svg",
-        stadium: "Selhurst Park",
-        stadiumImage: "assets/stadiums/crystal-palace.jpg"
-      },
-      {
-        club: "Everton",
-        crest: "assets/crests/everton.svg",
-        stadium: "Goodison Park",
-        stadiumImage: "assets/stadiums/everton.jpg"
-      },
-      {
-        club: "Fulham",
-        crest: "assets/crests/fulham.svg",
-        stadium: "Craven Cottage",
-        stadiumImage: "assets/stadiums/fulham.jpg"
-      },
-      {
-        club: "Leeds United",
-        crest: "assets/crests/leeds-united.svg",
-        stadium: "Elland Road",
-        stadiumImage: "assets/stadiums/leeds-united.jpg"
-      },
-      {
-        club: "Liverpool",
-        crest: "assets/crests/liverpool.svg",
-        stadium: "Anfield",
-        stadiumImage: "assets/stadiums/liverpool.jpg"
-      },
-      {
-        club: "Manchester City",
-        crest: "assets/crests/manchester-city.svg",
-        stadium: "Etihad Stadium",
-        stadiumImage: "assets/stadiums/manchester-city.jpg"
-      },
-      {
-        club: "Manchester United",
-        crest: "assets/crests/manchester-united.svg",
-        stadium: "Old Trafford",
-        stadiumImage: "assets/stadiums/manchester-united.jpg"
-      },
-      {
-        club: "Newcastle United",
-        crest: "assets/crests/newcastle-united.svg",
-        stadium: "St James' Park",
-        stadiumImage: "assets/stadiums/newcastle-united.jpg"
-      },
-      {
-        club: "Nottingham Forest",
-        crest: "assets/crests/nottingham-forest.svg",
-        stadium: "City Ground",
-        stadiumImage: "assets/stadiums/nottingham-forest.jpg"
-      },
-      {
-        club: "Sunderland",
-        crest: "assets/crests/sunderland.svg",
-        stadium: "Stadium of Light",
-        stadiumImage: "assets/stadiums/sunderland.jpg"
-      },
-      {
-        club: "Tottenham Hotspur",
-        crest: "assets/crests/tottenham-hotspur.svg",
-        stadium: "Tottenham Hotspur Stadium",
-        stadiumImage: "assets/stadiums/tottenham-hotspur.jpg"
-      },
-      {
-        club: "West Ham United",
-        crest: "assets/crests/west-ham-united.svg",
-        stadium: "London Stadium",
-        stadiumImage: "assets/stadiums/west-ham-united.jpg"
-      },
-      {
-        club: "Wolverhampton Wanderers",
-        crest: "assets/crests/wolverhampton-wanderers.svg",
-        stadium: "Molineux Stadium",
-        stadiumImage: "assets/stadiums/wolverhampton-wanderers.jpg"
-      }
+      { club: "Arsenal", crest: "assets/crests/arsenal.svg", stadium: "Emirates Stadium", stadiumImage: "assets/stadiums/arsenal.jpg" },
+      { club: "Aston Villa", crest: "assets/crests/aston-villa.svg", stadium: "Villa Park", stadiumImage: "assets/stadiums/aston-villa.jpg" },
+      { club: "Bournemouth", crest: "assets/crests/bournemouth.svg", stadium: "Vitality Stadium", stadiumImage: "assets/stadiums/bournemouth.jpg" },
+      { club: "Brentford", crest: "assets/crests/brentford.svg", stadium: "Gtech Community Stadium", stadiumImage: "assets/stadiums/brentford.jpg" },
+      { club: "Brighton & Hove Albion", crest: "assets/crests/brighton.svg", stadium: "Amex Stadium", stadiumImage: "assets/stadiums/brighton.jpg" },
+      { club: "Burnley", crest: "assets/crests/burnley.svg", stadium: "Turf Moor", stadiumImage: "assets/stadiums/burnley.jpg" },
+      { club: "Chelsea", crest: "assets/crests/chelsea.svg", stadium: "Stamford Bridge", stadiumImage: "assets/stadiums/chelsea.jpg" },
+      { club: "Crystal Palace", crest: "assets/crests/crystal-palace.svg", stadium: "Selhurst Park", stadiumImage: "assets/stadiums/crystal-palace.jpg" },
+      { club: "Everton", crest: "assets/crests/everton.svg", stadium: "Goodison Park", stadiumImage: "assets/stadiums/everton.jpg" },
+      { club: "Fulham", crest: "assets/crests/fulham.svg", stadium: "Craven Cottage", stadiumImage: "assets/stadiums/fulham.jpg" },
+      { club: "Leeds United", crest: "assets/crests/leeds-united.svg", stadium: "Elland Road", stadiumImage: "assets/stadiums/leeds-united.jpg" },
+      { club: "Liverpool", crest: "assets/crests/liverpool.svg", stadium: "Anfield", stadiumImage: "assets/stadiums/liverpool.jpg" },
+      { club: "Manchester City", crest: "assets/crests/manchester-city.svg", stadium: "Etihad Stadium", stadiumImage: "assets/stadiums/manchester-city.jpg" },
+      { club: "Manchester United", crest: "assets/crests/manchester-united.svg", stadium: "Old Trafford", stadiumImage: "assets/stadiums/manchester-united.jpg" },
+      { club: "Newcastle United", crest: "assets/crests/newcastle-united.svg", stadium: "St James' Park", stadiumImage: "assets/stadiums/newcastle-united.jpg" },
+      { club: "Nottingham Forest", crest: "assets/crests/nottingham-forest.svg", stadium: "City Ground", stadiumImage: "assets/stadiums/nottingham-forest.jpg" },
+      { club: "Sunderland", crest: "assets/crests/sunderland.svg", stadium: "Stadium of Light", stadiumImage: "assets/stadiums/sunderland.jpg" },
+      { club: "Tottenham Hotspur", crest: "assets/crests/tottenham-hotspur.svg", stadium: "Tottenham Hotspur Stadium", stadiumImage: "assets/stadiums/tottenham-hotspur.jpg" },
+      { club: "West Ham United", crest: "assets/crests/west-ham-united.svg", stadium: "London Stadium", stadiumImage: "assets/stadiums/west-ham-united.jpg" },
+      { club: "Wolverhampton Wanderers", crest: "assets/crests/wolverhampton-wanderers.svg", stadium: "Molineux Stadium", stadiumImage: "assets/stadiums/wolverhampton-wanderers.jpg" }
     ]
   },
   laliga: {
     name: "La Liga",
     logo: "assets/leagues/laliga.png",
+    tagLeft: "Klub",
+    tagRight: "Stadion",
     pairs: [
-      { club: "Alavés", crest: "assets/crests/alaves.png", stadium: "Mendizorrotza", stadiumImage: "assets/stadiums/alaves.jpg" },
-      { club: "Athletic Club", crest: "assets/crests/athletic-club.png", stadium: "San Mamés", stadiumImage: "assets/stadiums/athletic-club.jpg" },
-      { club: "Atlético Madrid", crest: "assets/crests/atletico-madrid.png", stadium: "Cívitas Metropolitano", stadiumImage: "assets/stadiums/atletico-madrid.jpg" },
-      { club: "Barcelona", crest: "assets/crests/barcelona.png", stadium: "Estadi Olímpic Lluís Companys", stadiumImage: "assets/stadiums/barcelona.jpg" },
-      { club: "Celta Vigo", crest: "assets/crests/celta-vigo.svg", stadium: "Balaídos", stadiumImage: "assets/stadiums/celta-vigo.jpg" },
+      { club: "Alaves", crest: "assets/crests/alaves.png", stadium: "Mendizorroza", stadiumImage: "assets/stadiums/alaves.jpg" },
+      { club: "Athletic Club", crest: "assets/crests/athletic-club.png", stadium: "San Mames", stadiumImage: "assets/stadiums/athletic-club.jpg" },
+      { club: "Atletico Madrid", crest: "assets/crests/atletico-madrid.png", stadium: "Civitas Metropolitano", stadiumImage: "assets/stadiums/atletico-madrid.jpg" },
+      { club: "Barcelona", crest: "assets/crests/barcelona.png", stadium: "Estadi Olimpic Lluis Companys", stadiumImage: "assets/stadiums/barcelona.jpg" },
+      { club: "Celta Vigo", crest: "assets/crests/celta-vigo.svg", stadium: "Balaidos", stadiumImage: "assets/stadiums/celta-vigo.jpg" },
       { club: "Espanyol", crest: "assets/crests/espanyol.svg", stadium: "Stage Front Stadium", stadiumImage: "assets/stadiums/espanyol.jpg" },
-      { club: "Getafe", crest: "assets/crests/getafe.jpg", stadium: "Coliseum Alfonso Pérez", stadiumImage: "assets/stadiums/getafe.jpg" },
+      { club: "Getafe", crest: "assets/crests/getafe.jpg", stadium: "Coliseum Alfonso Perez", stadiumImage: "assets/stadiums/getafe.jpg" },
       { club: "Girona", crest: "assets/crests/girona.svg", stadium: "Montilivi", stadiumImage: "assets/stadiums/girona.jpg" },
       { club: "Las Palmas", crest: "assets/crests/las-palmas.svg", stadium: "Estadio de Gran Canaria", stadiumImage: "assets/stadiums/las-palmas.jpg" },
-      { club: "Leganés", crest: "assets/crests/leganes.png", stadium: "Butarque", stadiumImage: "assets/stadiums/leganes.jpg" },
+      { club: "Leganes", crest: "assets/crests/leganes.png", stadium: "Butarque", stadiumImage: "assets/stadiums/leganes.jpg" },
       { club: "Mallorca", crest: "assets/crests/mallorca.svg", stadium: "Visit Mallorca Stadium", stadiumImage: "assets/stadiums/mallorca.jpg" },
       { club: "Osasuna", crest: "assets/crests/osasuna.jpg", stadium: "El Sadar", stadiumImage: "assets/stadiums/osasuna.jpg" },
       { club: "Rayo Vallecano", crest: "assets/crests/rayo-vallecano.svg", stadium: "Vallecas Stadium", stadiumImage: "assets/stadiums/rayo-vallecano.jpg" },
-      { club: "Real Betis", crest: "assets/crests/real-betis.svg", stadium: "Benito Villamarín", stadiumImage: "assets/stadiums/real-betis.jpg" },
-      { club: "Real Madrid", crest: "assets/crests/real-madrid.png", stadium: "Santiago Bernabéu", stadiumImage: "assets/stadiums/real-madrid.jpg" },
+      { club: "Real Betis", crest: "assets/crests/real-betis.svg", stadium: "Benito Villamarin", stadiumImage: "assets/stadiums/real-betis.jpg" },
+      { club: "Real Madrid", crest: "assets/crests/real-madrid.png", stadium: "Santiago Bernabeu", stadiumImage: "assets/stadiums/real-madrid.jpg" },
       { club: "Real Oviedo", crest: "assets/crests/real-oviedo.jpg", stadium: "Carlos Tartiere", stadiumImage: "assets/stadiums/real-oviedo.jpg" },
       { club: "Real Sociedad", crest: "assets/crests/real-sociedad.svg", stadium: "Reale Arena", stadiumImage: "assets/stadiums/real-sociedad.png" },
-      { club: "Sevilla", crest: "assets/crests/sevilla.jpg", stadium: "Ramón Sánchez Pizjuán", stadiumImage: "assets/stadiums/sevilla.jpg" },
+      { club: "Sevilla", crest: "assets/crests/sevilla.jpg", stadium: "Ramon Sanchez Pizjuan", stadiumImage: "assets/stadiums/sevilla.jpg" },
       { club: "Valencia", crest: "assets/crests/valencia.png", stadium: "Mestalla", stadiumImage: "assets/stadiums/valencia.JPG" },
-      { club: "Villarreal", crest: "assets/crests/villarreal.svg", stadium: "Estadio de la Cerámica", stadiumImage: "assets/stadiums/villarreal.jpg" }
+      { club: "Villarreal", crest: "assets/crests/villarreal.svg", stadium: "Estadio de la Ceramica", stadiumImage: "assets/stadiums/villarreal.jpg" }
     ]
   },
   seriea: {
     name: "Serie A",
     logo: "assets/leagues/seriea.png",
+    tagLeft: "Klub",
+    tagRight: "Stadion",
     pairs: [
       { club: "Atalanta", crest: "assets/crests/atalanta.png", stadium: "Gewiss Stadium", stadiumImage: "assets/stadiums/atalanta.jpg" },
       { club: "Bologna", crest: "assets/crests/bologna.png", stadium: "Stadio Renato Dall'Ara", stadiumImage: "assets/stadiums/bologna.jpg" },
@@ -175,6 +81,32 @@ const leagues = {
       { club: "Udinese", crest: "assets/crests/udinese.png", stadium: "Dacia Arena", stadiumImage: "assets/stadiums/udinese.jpg" },
       { club: "Venezia", crest: "assets/crests/venezia.png", stadium: "Stadio Pier Luigi Penzo", stadiumImage: "assets/stadiums/venezia.jpg" },
       { club: "Verona", crest: "assets/crests/verona.png", stadium: "Stadio Marc'Antonio Bentegodi", stadiumImage: "assets/stadiums/verona.jpg" }
+    ]
+  },
+  bundesliga: {
+    name: "Bundesliga",
+    logo: "assets/leagues/bundesliga.png",
+    tagLeft: "Klub",
+    tagRight: "Stadion",
+    pairs: [
+      { club: "FC Augsburg", stadium: "WWK Arena" },
+      { club: "Union Berlin", stadium: "Stadion An der Alten Forsterei" },
+      { club: "Werder Bremen", stadium: "Weserstadion" },
+      { club: "Borussia Dortmund", stadium: "Signal Iduna Park" },
+      { club: "Eintracht Frankfurt", stadium: "Deutsche Bank Park" },
+      { club: "SC Freiburg", stadium: "Europa-Park Stadion" },
+      { club: "Hamburger SV", stadium: "Volksparkstadion" },
+      { club: "1. FC Heidenheim", stadium: "Voith-Arena" },
+      { club: "TSG Hoffenheim", stadium: "PreZero Arena" },
+      { club: "1. FC Koln", stadium: "RheinEnergieStadion" },
+      { club: "RB Leipzig", stadium: "Red Bull Arena" },
+      { club: "Bayer Leverkusen", stadium: "BayArena" },
+      { club: "Mainz 05", stadium: "Mewa Arena" },
+      { club: "Borussia Monchengladbach", stadium: "Borussia-Park" },
+      { club: "Bayern Munich", stadium: "Allianz Arena" },
+      { club: "FC St. Pauli", stadium: "Millerntor-Stadion" },
+      { club: "VfB Stuttgart", stadium: "MHPArena" },
+      { club: "VfL Wolfsburg", stadium: "Volkswagen Arena" }
     ]
   }
 };
@@ -221,11 +153,15 @@ let state = {
 };
 
 function buildDeck() {
+  const league = leagues[activeLeague] || {};
+  const tagLeft = league.tagLeft ?? "Klub";
+  const tagRight = league.tagRight ?? "Stadion";
+
   return activePairs.flatMap((pair, index) => {
     const pairId = String(index);
     return [
-      { pairId, kind: "club", label: pair.club, crest: pair.crest },
-      { pairId, kind: "stadium", label: pair.stadium, stadiumImage: pair.stadiumImage }
+      { pairId, kind: "club", label: pair.club, crest: pair.crest, tag: tagLeft },
+      { pairId, kind: "stadium", label: pair.stadium, stadiumImage: pair.stadiumImage, tag: tagRight }
     ];
   });
 }
@@ -283,17 +219,21 @@ function createCardElement(card) {
   button.className = "card";
   button.dataset.pairId = card.pairId;
   button.dataset.kind = card.kind;
-  button.setAttribute("aria-label", `${card.kind === "club" ? "Klub" : "Stadion"}: ${card.label}`);
+  button.setAttribute("aria-label", `${card.tag || card.kind}: ${card.label}`);
   const frontLogo = leagues[activeLeague]?.logo || "";
+  const tagText = card.tag || (card.kind === "club" ? "Klub" : "Stadion");
+  const crestMarkup = card.crest ? `<img class="media" src="${card.crest}" alt="${card.label}">` : "";
+  const stadiumMarkup = card.stadiumImage ? `<img class="stadium" src="${card.stadiumImage}" alt="${card.label}">` : "";
+  const bodyMarkup = card.kind === "club" ? `${crestMarkup}<span class="label">${card.label}</span>` : `${stadiumMarkup}<span class="label">${card.label}</span>`;
+
   button.innerHTML = `
     <div class="card-inner">
-      <div class="card-face card-front">${frontLogo ? `<img class="league-badge" src="${frontLogo}" alt="Logo lige">` : "Memory"}</div>
+      <div class="card-face card-front">${frontLogo ? `<img class="league-badge" src="${frontLogo}" alt="Logo">` : "Memory"}</div>
       <div class="card-face card-back">
         <span class="tag ${card.kind === "club" ? "club-tag" : "stadium-tag"}">
-          ${card.kind === "club" ? "Klub" : "Stadion"}
+          ${tagText}
         </span>
-        ${card.kind === "club" ? `<img class="media" src="${card.crest}" alt="Grb ${card.label}">` : `<img class="stadium" src="${card.stadiumImage}" alt="${card.label}">`}
-        <span class="label">${card.label}</span>
+        ${bodyMarkup}
       </div>
     </div>
   `;
@@ -359,11 +299,8 @@ function computeScore() {
   const idealMoves = Math.max(1, activePairs.length);
   const movePenalty = Math.max(0, state.moves - idealMoves);
   const moveComponent = Math.max(0, 900 - movePenalty * 60);
-
   const timeComponent = Math.max(0, 1100 - state.time * 8);
-
   const progressBonus = state.matches * 45;
-
   return Math.max(0, Math.round(moveComponent + timeComponent + progressBonus));
 }
 
@@ -371,7 +308,7 @@ function pickActivePairs() {
   const league = leagues[activeLeague];
   const level = levels[currentLevelIndex];
   if (!league || !level) return [];
-  const neededPairs = Math.min(level.cols * level.rows / 2, league.pairs.length);
+  const neededPairs = Math.min((level.cols * level.rows) / 2, league.pairs.length);
   return shuffleInPlace([...league.pairs]).slice(0, neededPairs);
 }
 
