@@ -1,6 +1,7 @@
 const leagues = {
   epl: {
     name: "Premier League",
+    logo: "assets/leagues/epl.png",
     pairs: [
       {
         club: "Arsenal",
@@ -126,6 +127,7 @@ const leagues = {
   },
   laliga: {
     name: "La Liga",
+    logo: "assets/leagues/laliga.png",
     pairs: [
       { club: "Alavés", crest: "assets/crests/alaves.png", stadium: "Mendizorrotza", stadiumImage: "assets/stadiums/alaves.jpg" },
       { club: "Athletic Club", crest: "assets/crests/athletic-club.png", stadium: "San Mamés", stadiumImage: "assets/stadiums/athletic-club.jpg" },
@@ -256,9 +258,10 @@ function createCardElement(card) {
   button.dataset.pairId = card.pairId;
   button.dataset.kind = card.kind;
   button.setAttribute("aria-label", `${card.kind === "club" ? "Klub" : "Stadion"}: ${card.label}`);
+  const frontLogo = leagues[activeLeague]?.logo || "";
   button.innerHTML = `
     <div class="card-inner">
-      <div class="card-face card-front">Premier Match</div>
+      <div class="card-face card-front">${frontLogo ? `<img class="league-badge" src="${frontLogo}" alt="Logo lige">` : "Memory"}</div>
       <div class="card-face card-back">
         <span class="tag ${card.kind === "club" ? "club-tag" : "stadium-tag"}">
           ${card.kind === "club" ? "Klub" : "Stadion"}

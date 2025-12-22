@@ -252,6 +252,13 @@ h1 {
   font-weight: 700;
 }
 
+.league-badge {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
 .card-back {
   transform: rotateY(180deg);
   background: var(--card);
