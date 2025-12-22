@@ -14,12 +14,19 @@
     <header class="header">
       <div>
         <p class="eyebrow">Memory game</p>
-        <h1>Premier League: klub & stadion</h1>
-        <p class="lede">Spoji svaki klub sa njegovim domacim stadionom. 20 parova, 40 kartica, jedna dobra misija.</p>
+        <h1>Klub & stadion: lige</h1>
+        <p class="lede">Spoji klub sa domacim stadionom. Biraj ligu, 8 nasumicnih parova svake partije.</p>
       </div>
       <div class="controls">
         <button class="pill" type="button" data-restart>Nova partija</button>
         <button class="pill ghost" type="button" data-shuffle>Promesaj</button>
+      </div>
+      <div class="league-switch">
+        <p class="label">Liga</p>
+        <div class="league-buttons">
+          <button class="pill ghost active" type="button" data-league="epl">Premier League</button>
+          <button class="pill ghost" type="button" data-league="laliga">La Liga</button>
+        </div>
       </div>
     </header>
 
@@ -27,6 +34,10 @@
       <div class="stat">
         <p class="label">Poteza</p>
         <p class="value" data-moves>0</p>
+      </div>
+      <div class="stat">
+        <p class="label">Nivo</p>
+        <p class="value" data-level>1</p>
       </div>
       <div class="stat">
         <p class="label">Spojeni parovi</p>
@@ -56,7 +67,8 @@
         <h2 data-victory-title>Spojio si sve parove.</h2>
         <p class="lede" data-victory-copy></p>
         <div class="victory-actions">
-          <button class="pill" type="button" data-restart-secondary>Igraj opet</button>
+          <button class="pill" type="button" data-next-level>Sledeci nivo</button>
+          <button class="pill ghost" type="button" data-restart-secondary>Ponovi nivo</button>
           <button class="pill ghost" type="button" data-close-victory>Pregled table</button>
         </div>
       </div>

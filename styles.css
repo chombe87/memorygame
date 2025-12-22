@@ -73,6 +73,40 @@ h1 {
   align-items: center;
 }
 
+.league-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 240px;
+}
+
+.league-switch .label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.league-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.league-buttons .pill {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.league-buttons .pill.active {
+  background: linear-gradient(135deg, var(--accent-2), #5cf0ff);
+  color: #041018;
+  border-color: transparent;
+  box-shadow: 0 12px 28px rgba(0, 194, 199, 0.35);
+}
+
 .pill {
   border: none;
   background: linear-gradient(135deg, var(--accent), #ff5f92);
@@ -172,9 +206,9 @@ h1 {
 .board {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 520px;
-  width: min(88vw, 520px);
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+  max-width: min(90vw, calc(var(--cols, 4) * 140px));
+  width: min(90vw, calc(var(--cols, 4) * 140px));
   margin: 0 auto;
 }
 
@@ -339,7 +373,7 @@ h1 {
 
 @media (min-width: 1080px) {
   .board {
-    max-width: 480px;
-    width: min(65vw, 480px);
+    max-width: min(70vw, calc(var(--cols, 4) * 130px));
+    width: min(70vw, calc(var(--cols, 4) * 130px));
   }
 }
