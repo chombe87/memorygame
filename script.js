@@ -125,6 +125,7 @@ const boardEl = document.querySelector("[data-board]");
 const movesEl = document.querySelector("[data-moves]");
 const matchesEl = document.querySelector("[data-matches]");
 const timerEl = document.querySelector("[data-timer]");
+const scoreEl = document.querySelector("[data-score]");
 const restartButtons = document.querySelectorAll("[data-restart], [data-restart-secondary], [data-shuffle]");
 const victoryEl = document.querySelector("[data-victory]");
 const victoryTitleEl = document.querySelector("[data-victory-title]");
@@ -141,7 +142,8 @@ let state = {
   matches: 0,
   time: 0,
   timerId: null,
-  started: false
+  started: false,
+  score: 0
 };
 
 function buildDeck() {
@@ -186,7 +188,8 @@ function resetState() {
     matches: 0,
     time: 0,
     timerId: null,
-    started: false
+    started: false,
+    score: 0
   };
   updateHud();
 }
@@ -195,6 +198,8 @@ function updateHud() {
   movesEl.textContent = state.moves;
   matchesEl.textContent = `${state.matches} / ${activePairs.length}`;
   timerEl.textContent = formatTime(state.time);
+  state.score = computeScore();
+  scoreEl.textContent = state.score;
 }
 
 function createCardElement(card) {
@@ -223,7 +228,7 @@ function createCardElement(card) {
 function revealVictory() {
   const timeText = formatTime(state.time);
   victoryTitleEl.textContent = "Sve je povezano!";
-  victoryCopyEl.textContent = `Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}.`;
+  victoryCopyEl.textContent = `Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}.`;
   victoryEl.hidden = false;
 }
 
@@ -255,6 +260,18 @@ function handleMatchFail() {
     state.second.classList.remove("flipped");
     resetPicks();
   }, 800);
+}
+
+function computeScore() {
+  const idealMoves = Math.max(1, activePairs.length);
+  const movePenalty = Math.max(0, state.moves - idealMoves);
+  const moveComponent = Math.max(0, 900 - movePenalty * 60);
+
+  const timeComponent = Math.max(0, 1100 - state.time * 8);
+
+  const progressBonus = state.matches * 45;
+
+  return Math.max(0, Math.round(moveComponent + timeComponent + progressBonus));
 }
 
 function handleFlip(cardEl) {
@@ -303,6 +320,7 @@ function startGame() {
   victoryEl.hidden = true;
   const shuffledPairs = shuffleInPlace([...allPairs]);
   activePairs = shuffledPairs.slice(0, 8);
+  updateHud();
   buildBoard();
 }
 
