@@ -117,6 +117,9 @@ const matchesEl = document.querySelector("[data-matches]");
 const timerEl = document.querySelector("[data-timer]");
 const scoreEl = document.querySelector("[data-score]");
 const totalScoreEl = document.querySelector("[data-total-score]");
+const summaryEl = document.querySelector("[data-summary]");
+const summaryRowsEl = document.querySelector("[data-summary-rows]");
+const summaryTotalEl = document.querySelector("[data-summary-total]");
 const levelEl = document.querySelector("[data-level]");
 const leagueButtons = document.querySelectorAll("[data-league]");
 const resetButtons = document.querySelectorAll("[data-restart]");
@@ -139,6 +142,7 @@ let activeLeague = "epl";
 let currentLevelIndex = 0;
 let totalScore = 0;
 let levelCompleteScore = 0;
+const levelHistory = [];
 let state = {
   deck: [],
   first: null,
@@ -248,9 +252,37 @@ function revealVictory() {
   const level = levels[currentLevelIndex];
   const isLastLevel = currentLevelIndex === levels.length - 1;
   levelCompleteScore = state.score;
+  levelHistory[currentLevelIndex] = {
+    level: currentLevelIndex + 1,
+    layout: `${level.cols}x${level.rows}`,
+    moves: state.moves,
+    time: formatTime(state.time),
+    score: state.score
+  };
   victoryTitleEl.textContent = "Sve je povezano!";
   victoryCopyEl.textContent = `Liga: ${leagueName}. Nivo ${currentLevelIndex + 1} (${level.cols}x${level.rows}). Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}.`;
   nextLevelBtn.hidden = isLastLevel;
+
+  if (isLastLevel && summaryEl && summaryRowsEl && summaryTotalEl) {
+    summaryRowsEl.innerHTML = "";
+    let total = 0;
+    levelHistory.forEach((item) => {
+      total += item.score || 0;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.level}</td>
+        <td>${item.layout}</td>
+        <td>${item.moves}</td>
+        <td>${item.time}</td>
+        <td>${item.score}</td>
+      `;
+      summaryRowsEl.appendChild(row);
+    });
+    summaryTotalEl.textContent = total;
+    summaryEl.hidden = false;
+    nextLevelBtn.hidden = true;
+  }
+
   updateHud();
   victoryEl.hidden = false;
 }
@@ -359,6 +391,7 @@ function setLeague(leagueKey) {
   currentLevelIndex = 0;
   totalScore = 0;
   levelCompleteScore = 0;
+  levelHistory.length = 0;
   leagueButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.league === leagueKey);
   });
@@ -366,9 +399,11 @@ function setLeague(leagueKey) {
 }
 
 function startGame() {
+  levelHistory.length = 0;
   levelCompleteScore = 0;
   resetState();
   victoryEl.hidden = true;
+  if (summaryEl) summaryEl.hidden = true;
   activePairs = pickActivePairs();
   const level = levels[currentLevelIndex];
   if (level) {

@@ -57,10 +57,6 @@
         <p class="label">Ukupno</p>
         <p class="value" data-total-score>0</p>
       </div>
-      <div class="stat hint">
-        <p class="label">Saveti</p>
-        <p class="value small">Kartice sa oznakom <span class="tag club-tag">Klub</span> spajaj sa <span class="tag stadium-tag">Stadion</span>. Flippuj i pamti.</p>
-      </div>
     </section>
 
     <main>
@@ -72,6 +68,26 @@
         <p class="eyebrow">Bravo!</p>
         <h2 data-victory-title>Spojio si sve parove.</h2>
         <p class="lede" data-victory-copy></p>
+        <div class="summary" data-summary hidden>
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Nivo</th>
+                <th>Raspored</th>
+                <th>Poteza</th>
+                <th>Vreme</th>
+                <th>Poeni</th>
+              </tr>
+            </thead>
+            <tbody data-summary-rows></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="total-label">Ukupno</td>
+                <td data-summary-total>0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
         <div class="victory-actions">
           <button class="pill" type="button" data-next-level>Sledeci nivo</button>
           <button class="pill ghost" type="button" data-restart-secondary>Ponovi nivo</button>

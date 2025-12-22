@@ -393,6 +393,40 @@ h1 {
   margin: 0 auto 12px;
 }
 
+.summary {
+  margin: 10px 0 14px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #e2ecff;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.summary-table thead th {
+  font-weight: 700;
+  color: #b8c7de;
+}
+
+.summary-table tfoot td {
+  font-weight: 700;
+  border-top: 1px solid var(--border);
+}
+
+.summary-table .total-label {
+  text-align: right;
+}
+
 .victory-actions {
   display: flex;
   justify-content: center;
