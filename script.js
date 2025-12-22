@@ -1,4 +1,4 @@
-const pairs = [
+const allPairs = [
   {
     club: "Arsenal",
     crest: "assets/crests/arsenal.svg",
@@ -129,7 +129,9 @@ const restartButtons = document.querySelectorAll("[data-restart], [data-restart-
 const victoryEl = document.querySelector("[data-victory]");
 const victoryTitleEl = document.querySelector("[data-victory-title]");
 const victoryCopyEl = document.querySelector("[data-victory-copy]");
+const closeVictoryBtn = document.querySelector("[data-close-victory]");
 
+let activePairs = [];
 let state = {
   deck: [],
   first: null,
@@ -143,7 +145,7 @@ let state = {
 };
 
 function buildDeck() {
-  return pairs.flatMap((pair, index) => {
+  return activePairs.flatMap((pair, index) => {
     const pairId = String(index);
     return [
       { pairId, kind: "club", label: pair.club, crest: pair.crest },
@@ -191,7 +193,7 @@ function resetState() {
 
 function updateHud() {
   movesEl.textContent = state.moves;
-  matchesEl.textContent = `${state.matches} / ${pairs.length}`;
+  matchesEl.textContent = `${state.matches} / ${activePairs.length}`;
   timerEl.textContent = formatTime(state.time);
 }
 
@@ -221,12 +223,12 @@ function createCardElement(card) {
 function revealVictory() {
   const timeText = formatTime(state.time);
   victoryTitleEl.textContent = "Sve je povezano!";
-  victoryCopyEl.textContent = `Spojio si ${pairs.length} parova u ${state.moves} poteza za ${timeText}.`;
+  victoryCopyEl.textContent = `Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}.`;
   victoryEl.hidden = false;
 }
 
 function checkForWin() {
-  if (state.matches === pairs.length) {
+  if (state.matches === activePairs.length) {
     stopTimer();
     revealVictory();
   }
@@ -299,11 +301,17 @@ function buildBoard() {
 function startGame() {
   resetState();
   victoryEl.hidden = true;
+  const shuffledPairs = shuffleInPlace([...allPairs]);
+  activePairs = shuffledPairs.slice(0, 8);
   buildBoard();
 }
 
 restartButtons.forEach((button) => {
   button.addEventListener("click", startGame);
+});
+
+closeVictoryBtn?.addEventListener("click", () => {
+  victoryEl.hidden = true;
 });
 
 startGame();
