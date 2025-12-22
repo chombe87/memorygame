@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier Memory | Klub + Stadion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div>
+        <p class="eyebrow">Memory game</p>
+        <h1>Premier League: klub & stadion</h1>
+        <p class="lede">Spoji svaki klub sa njegovim domacim stadionom. 20 parova, 40 kartica, jedna dobra misija.</p>
+      </div>
+      <div class="controls">
+        <button class="pill" type="button" data-restart>Nova partija</button>
+        <button class="pill ghost" type="button" data-shuffle>Promesaj</button>
+      </div>
+    </header>
+
+    <section class="hud">
+      <div class="stat">
+        <p class="label">Poteza</p>
+        <p class="value" data-moves>0</p>
+      </div>
+      <div class="stat">
+        <p class="label">Spojeni parovi</p>
+        <p class="value" data-matches>0 / 20</p>
+      </div>
+      <div class="stat">
+        <p class="label">Vreme</p>
+        <p class="value" data-timer>0:00</p>
+      </div>
+      <div class="stat hint">
+        <p class="label">Saveti</p>
+        <p class="value small">Kartice sa oznakom <span class="tag club-tag">Klub</span> spajaj sa <span class="tag stadium-tag">Stadion</span>. Flippuj i pamti.</p>
+      </div>
+    </section>
+
+    <main>
+      <div class="board" data-board aria-label="Tabla sa karticama za pamcenje"></div>
+    </main>
+
+    <div class="victory" data-victory hidden>
+      <div class="victory-card">
+        <p class="eyebrow">Bravo!</p>
+        <h2 data-victory-title>Spojio si sve parove.</h2>
+        <p class="lede" data-victory-copy></p>
+        <div class="victory-actions">
+          <button class="pill" type="button" data-restart-secondary>Igraj opet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
