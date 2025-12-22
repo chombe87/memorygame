@@ -30,6 +30,12 @@ const pairs = [
     stadiumImage: "assets/stadiums/brighton.jpg"
   },
   {
+    club: "Burnley",
+    crest: "assets/crests/burnley.svg",
+    stadium: "Turf Moor",
+    stadiumImage: "assets/stadiums/burnley.jpg"
+  },
+  {
     club: "Chelsea",
     crest: "assets/crests/chelsea.svg",
     stadium: "Stamford Bridge",
@@ -54,16 +60,10 @@ const pairs = [
     stadiumImage: "assets/stadiums/fulham.jpg"
   },
   {
-    club: "Ipswich Town",
-    crest: "assets/crests/ipswich-town.svg",
-    stadium: "Portman Road",
-    stadiumImage: "assets/stadiums/ipswich-town.jpg"
-  },
-  {
-    club: "Leicester City",
-    crest: "assets/crests/leicester-city.svg",
-    stadium: "King Power Stadium",
-    stadiumImage: "assets/stadiums/leicester-city.jpg"
+    club: "Leeds United",
+    crest: "assets/crests/leeds-united.svg",
+    stadium: "Elland Road",
+    stadiumImage: "assets/stadiums/leeds-united.jpg"
   },
   {
     club: "Liverpool",
@@ -96,10 +96,10 @@ const pairs = [
     stadiumImage: "assets/stadiums/nottingham-forest.jpg"
   },
   {
-    club: "Southampton",
-    crest: "assets/crests/southampton.svg",
-    stadium: "St Mary's Stadium",
-    stadiumImage: "assets/stadiums/southampton.jpg"
+    club: "Sunderland",
+    crest: "assets/crests/sunderland.svg",
+    stadium: "Stadium of Light",
+    stadiumImage: "assets/stadiums/sunderland.jpg"
   },
   {
     club: "Tottenham Hotspur",
@@ -221,7 +221,7 @@ function createCardElement(card) {
 function revealVictory() {
   const timeText = formatTime(state.time);
   victoryTitleEl.textContent = "Sve je povezano!";
-  victoryCopyEl.textContent = `Spojio si 20 parova u ${state.moves} poteza za ${timeText}.`;
+  victoryCopyEl.textContent = `Spojio si ${pairs.length} parova u ${state.moves} poteza za ${timeText}.`;
   victoryEl.hidden = false;
 }
 
