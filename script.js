@@ -150,10 +150,12 @@ const levelEl = document.querySelector("[data-level]");
 const leagueButtons = document.querySelectorAll("[data-league]");
 const resetButtons = document.querySelectorAll("[data-restart]");
 const reshuffleButtons = document.querySelectorAll("[data-restart-secondary], [data-shuffle]");
+const simulateWinBtn = document.querySelector("[data-simulate-win]");
 const victoryEl = document.querySelector("[data-victory]");
 const victoryTitleEl = document.querySelector("[data-victory-title]");
 const victoryCopyEl = document.querySelector("[data-victory-copy]");
 const nextLevelBtn = document.querySelector("[data-next-level]");
+const closePopupBtn = document.querySelector("[data-close-popup]");
 
 const levels = [
   { cols: 2, rows: 2 },
@@ -457,11 +459,67 @@ leagueButtons.forEach((button) => {
   button.addEventListener("click", () => setLeague(button.dataset.league));
 });
 
+simulateWinBtn?.addEventListener("click", () => {
+  // Test helper: popuni istoriju, prebaci na poslednji nivo i ostavi jedan par neotkriven.
+  const lastIndex = levels.length - 1;
+  levelHistory.length = 0;
+  totalScore = 0;
+
+  for (let i = 0; i < lastIndex; i += 1) {
+    const score = Math.floor(1500 + Math.random() * 1000);
+    const moves = Math.floor(10 + Math.random() * 15);
+    const timeSec = Math.floor(30 + Math.random() * 90);
+    levelHistory[i] = {
+      level: i + 1,
+      layout: `${levels[i].cols}x${levels[i].rows}`,
+      moves,
+      time: formatTime(timeSec),
+      score
+    };
+    totalScore += score;
+  }
+
+  currentLevelIndex = lastIndex;
+  levelCompleteScore = 0;
+  resetState();
+  victoryEl.hidden = true;
+  if (summaryEl) summaryEl.hidden = true;
+  activePairs = pickActivePairs();
+  const level = levels[currentLevelIndex];
+  if (level) {
+    boardEl.style.setProperty("--cols", level.cols);
+  }
+  buildBoard();
+
+  const cards = Array.from(boardEl.querySelectorAll(".card"));
+  const pairGroups = cards.reduce((acc, card) => {
+    const pid = card.dataset.pairId;
+    (acc[pid] = acc[pid] || []).push(card);
+    return acc;
+  }, {});
+  const pairIds = Object.keys(pairGroups);
+  const leaveUnmatched = pairIds[pairIds.length - 1];
+  let matched = 0;
+  pairIds.forEach((pid) => {
+    if (pid === leaveUnmatched) return;
+    pairGroups[pid].forEach((card) => card.classList.add("matched", "flipped"));
+    matched += 1;
+  });
+  state.matches = matched;
+  state.moves = 0;
+  state.time = 0;
+  updateHud();
+});
+
 nextLevelBtn?.addEventListener("click", () => {
   totalScore += levelCompleteScore;
   levelCompleteScore = 0;
   currentLevelIndex = Math.min(levels.length - 1, currentLevelIndex + 1);
   startGame();
+  victoryEl.hidden = true;
+});
+
+closePopupBtn?.addEventListener("click", () => {
   victoryEl.hidden = true;
 });
 

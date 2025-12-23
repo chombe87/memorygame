@@ -20,6 +20,7 @@
       <div class="controls">
         <button class="pill" type="button" data-restart>Nova partija</button>
         <button class="pill ghost" type="button" data-shuffle>Promesaj</button>
+        <button class="pill ghost" type="button" data-simulate-win title="Test dugme - ukloniti posle">Predji igricu</button>
       </div>
       <div class="league-switch">
         <p class="label">Liga</p>
@@ -66,6 +67,7 @@
 
     <div class="victory" data-victory hidden>
       <div class="victory-card">
+        <button class="pill ghost icon close-btn" type="button" data-close-popup aria-label="Zatvori">✕</button>
         <p class="eyebrow">Bravo!</p>
         <h2 data-victory-title>Spojio si sve parove.</h2>
         <p class="lede" data-victory-copy></p>
@@ -92,6 +94,7 @@
         <div class="victory-actions">
           <button class="pill" type="button" data-next-level>Sledeci nivo</button>
           <button class="pill ghost" type="button" data-restart-secondary>Ponovi nivo</button>
+          <button class="pill ghost" type="button" data-restart>Nova igra</button>
         </div>
       </div>
     </div>
