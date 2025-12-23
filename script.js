@@ -419,15 +419,17 @@ function setLeague(leagueKey) {
   currentLevelIndex = 0;
   totalScore = 0;
   levelCompleteScore = 0;
-  levelHistory.length = 0;
   leagueButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.league === leagueKey);
   });
-  startGame();
+  startGame({ resetHistory: true });
 }
 
-function startGame() {
-  levelHistory.length = 0;
+function startGame(options = {}) {
+  const { resetHistory = false } = options;
+  if (resetHistory) {
+    levelHistory.length = 0;
+  }
   levelCompleteScore = 0;
   resetState();
   victoryEl.hidden = true;
@@ -446,8 +448,7 @@ resetButtons.forEach((button) => {
     currentLevelIndex = 0;
     totalScore = 0;
     levelCompleteScore = 0;
-    levelHistory.length = 0;
-    startGame();
+    startGame({ resetHistory: true });
   });
 });
 
@@ -523,4 +524,4 @@ closePopupBtn?.addEventListener("click", () => {
   victoryEl.hidden = true;
 });
 
-startGame();
+startGame({ resetHistory: true });
