@@ -369,7 +369,6 @@ function createCardElement(card) {
   button.dataset.kind = card.kind;
   button.setAttribute("aria-label", `${card.tag || card.kind}: ${card.label}`);
   const frontLogo = leagues[activeLeague]?.logo || "";
-  const tagText = card.tag || (card.kind === "club" ? "Klub" : "Stadion");
   const crestMarkup = card.crest ? `<img class="media" src="${card.crest}" alt="${card.label}">` : "";
   const stadiumMarkup = card.stadiumImage ? `<img class="stadium" src="${card.stadiumImage}" alt="${card.label}">` : "";
   const bodyMarkup = card.kind === "club" ? `${crestMarkup}<span class="label">${card.label}</span>` : `${stadiumMarkup}<span class="label">${card.label}</span>`;
@@ -378,9 +377,6 @@ function createCardElement(card) {
     <div class="card-inner">
       <div class="card-face card-front">${frontLogo ? `<img class="league-badge" src="${frontLogo}" alt="Logo">` : "Memory"}</div>
       <div class="card-face card-back">
-        <span class="tag ${card.kind === "club" ? "club-tag" : "stadium-tag"}">
-          ${tagText}
-        </span>
         ${bodyMarkup}
       </div>
     </div>
@@ -607,6 +603,8 @@ function startGame(options = {}) {
   const level = levels[currentLevelIndex];
   if (level) {
     boardEl.style.setProperty("--cols", level.cols);
+    boardEl.dataset.cols = String(level.cols);
+    boardEl.dataset.rows = String(level.rows);
   }
   updateHud();
   buildBoard();

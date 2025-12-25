@@ -296,7 +296,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
 }
 
 .card-back .label {
@@ -562,6 +562,81 @@ h1 {
   }
 }
 
+/* Tighter layout on small screens and high column counts */
+.board[data-cols="5"] .card-back .label {
+  font-size: 9px;
+}
+
+.board[data-cols="6"] .card-back .label {
+  font-size: 8px;
+}
+
+.board[data-cols="5"] .tag,
+.board[data-cols="6"] .tag {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.board[data-cols="6"] .tag {
+  font-size: 10px;
+}
+
+.board[data-cols="5"] .card-back .stadium {
+  height: 88px;
+}
+
+.board[data-cols="6"] .card-back .stadium {
+  height: 80px;
+}
+
+@media (max-width: 500px) {
+  .board {
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .card-face.card-back {
+    padding: 10px;
+  }
+
+  .card-back .label {
+    font-size: 8px;
+    line-height: 1.1;
+  }
+
+  .card-back .stadium {
+    height: 80px;
+  }
+
+  .tag {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .tag::before {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 500px) {
+  .board[data-cols="5"] .card-back .label,
+  .board[data-cols="6"] .card-back .label {
+    font-size: 7px;
+    line-height: 1.05;
+  }
+
+  .board[data-cols="5"] .tag,
+  .board[data-cols="6"] .tag {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+
+  .board[data-cols="6"] .card-back .stadium {
+    height: 70px;
+  }
+}
 @media (min-width: 1080px) {
   .board {
     max-width: min(70vw, calc(var(--cols, 4) * 130px));
