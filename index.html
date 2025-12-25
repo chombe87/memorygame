@@ -18,9 +18,18 @@
         <p class="lede">Spoji klub sa stadionom</p>
       </div>
       <div class="controls">
-        <button class="pill" type="button" data-restart>Nova partija</button>
-        <button class="pill ghost" type="button" data-shuffle>Promesaj</button>
-        <button class="pill ghost" type="button" data-simulate-win title="Test dugme - ukloniti posle">Predji igricu</button>
+        <div class="sound-control">
+          <label for="volume" class="label">Zvuk</label>
+          <div class="sound-row">
+            <input id="volume" type="range" min="0" max="100" value="90" step="1" data-volume>
+            <button class="pill ghost icon" type="button" data-mute title="Mute / Unmute">🔇</button>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="pill" type="button" data-restart>Nova partija</button>
+          <button class="pill ghost" type="button" data-shuffle>Promesaj</button>
+          <button class="pill ghost" type="button" data-simulate-win title="Test dugme - ukloniti posle">Predji igricu</button>
+        </div>
       </div>
       <div class="league-switch">
         <p class="label">Liga</p>

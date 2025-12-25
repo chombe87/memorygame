@@ -69,8 +69,39 @@ h1 {
 
 .controls {
   display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-group {
+  display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.sound-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.sound-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sound-control .label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sound-control input[type="range"] {
+  accent-color: var(--accent);
+  flex: 1;
 }
 
 .league-switch {
@@ -314,8 +345,19 @@ h1 {
 }
 
 .card.hit .card-inner {
-  animation: hit-pulse 0.65s ease;
+  animation: hit-pulse 0.65s ease, hit-tilt 0.6s ease;
   box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.35), 0 14px 34px rgba(0, 194, 199, 0.25);
+}
+
+.card.hit .card-inner::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 170, 0.3), rgba(0, 255, 170, 0.02));
+  opacity: 0;
+  pointer-events: none;
+  animation: hit-burst 0.6s ease;
 }
 
 .card.miss .card-inner {
@@ -335,6 +377,36 @@ h1 {
   }
   100% {
     box-shadow: 0 0 0 24px rgba(0, 255, 170, 0);
+  }
+}
+
+@keyframes hit-burst {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.85);
+  }
+  60% {
+    opacity: 0.4;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+@keyframes hit-tilt {
+  0% {
+    transform: translateZ(0) rotateY(180deg);
+  }
+  25% {
+    transform: translateZ(8px) rotateY(186deg);
+  }
+  50% {
+    transform: translateZ(0) rotateY(174deg);
+  }
+  100% {
+    transform: translateZ(0) rotateY(180deg);
   }
 }
 

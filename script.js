@@ -147,6 +147,8 @@ const matchesEl = document.querySelector("[data-matches]");
 const timerEl = document.querySelector("[data-timer]");
 const scoreEl = document.querySelector("[data-score]");
 const totalScoreEl = document.querySelector("[data-total-score]");
+const volumeSlider = document.querySelector("[data-volume]");
+const muteBtn = document.querySelector("[data-mute]");
 const summaryEl = document.querySelector("[data-summary]");
 const summaryRowsEl = document.querySelector("[data-summary-rows]");
 const summaryTotalEl = document.querySelector("[data-summary-total]");
@@ -162,6 +164,7 @@ const nextLevelBtn = document.querySelector("[data-next-level]");
 const closePopupBtn = document.querySelector("[data-close-popup]");
 
 const BASE_SCORE = 10000;
+let audioCtx = null;
 
 const levels = [
   { cols: 2, rows: 2 },
@@ -178,6 +181,8 @@ let activeLeague = "epl";
 let currentLevelIndex = 0;
 let totalScore = 0;
 let levelCompleteScore = 0;
+let masterVolume = 0.9;
+let muted = false;
 const levelHistory = [];
 let state = {
   deck: [],
@@ -191,6 +196,23 @@ let state = {
   started: false,
   score: 0
 };
+
+function updateAudioUi() {
+  if (muteBtn) {
+    muteBtn.textContent = muted ? "🔇" : "🔊";
+  }
+  if (volumeSlider) {
+    const val = Math.round(masterVolume * 100);
+    volumeSlider.value = String(val);
+  }
+}
+
+function resumeAudioContext() {
+  const ctx = ensureAudioCtx();
+  if (ctx && ctx.state === "suspended") {
+    ctx.resume();
+  }
+}
 
 function buildDeck() {
   const league = leagues[activeLeague] || {};
@@ -220,6 +242,88 @@ function formatTimeMs(totalMs) {
   const seconds = Math.floor((safeMs % 60000) / 1000);
   const ms = safeMs % 1000;
   return `${minutes}:${String(seconds).padStart(2, "0")}.${String(ms).padStart(3, "0")}`;
+}
+
+function ensureAudioCtx() {
+  if (!audioCtx) {
+    const Ctor = window.AudioContext || window.webkitAudioContext;
+    audioCtx = Ctor ? new Ctor() : null;
+  }
+  return audioCtx;
+}
+
+function getMasterVolume() {
+  return muted ? 0 : masterVolume;
+}
+
+function playTone(freq, duration = 0.14, type = "sine", volume = 0.12, delay = 0) {
+  const ctx = ensureAudioCtx();
+  if (!ctx) return;
+  const master = getMasterVolume();
+  if (master <= 0) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  const now = ctx.currentTime + delay;
+  gain.gain.setValueAtTime(volume * master, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + duration + 0.05);
+}
+
+function playHitSound() {
+  playTone(880, 0.12, "triangle", 0.16, 0);
+playTone(1320, 0.08, "sine", 0.12, 0.02);
+}
+
+function playMissSound() {
+  playTone(320, 0.16, "sine", 0.08, 0);
+  playTone(240, 0.2, "triangle", 0.07, 0.02);
+}
+
+function playCrowdCheer(duration = 1.8, peak = 0.18) {
+  const ctx = ensureAudioCtx();
+  if (!ctx) return;
+  const master = getMasterVolume();
+  if (master <= 0) return;
+  const sampleCount = Math.floor(ctx.sampleRate * duration);
+  const buffer = ctx.createBuffer(1, sampleCount, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < sampleCount; i += 1) {
+    data[i] = (Math.random() * 2 - 1) * 0.6;
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+
+  const bandpass = ctx.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = 700;
+  bandpass.Q.value = 0.9;
+
+  const lowpass = ctx.createBiquadFilter();
+  lowpass.type = "lowpass";
+  lowpass.frequency.value = 2000;
+
+  const gain = ctx.createGain();
+  const now = ctx.currentTime;
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(peak * master, now + 0.2);
+  gain.gain.exponentialRampToValueAtTime(Math.max(0.04, peak * 0.28) * master, now + duration);
+
+  source.connect(bandpass).connect(lowpass).connect(gain).connect(ctx.destination);
+  source.start(now);
+  source.stop(now + duration + 0.1);
+
+  // Add low rumble for stadium feel
+  playTone(180, duration * 0.35, "sine", 0.05 * master, 0);
+}
+
+function playVictorySound(isFinal = false) {
+  const duration = isFinal ? 3.8 : 1.8;
+  const peak = isFinal ? 0.24 : 0.18;
+  playCrowdCheer(duration, peak);
 }
 
 function stopTimer() {
@@ -303,20 +407,20 @@ function revealVictory() {
   victoryTitleEl.textContent = "Sve je povezano!";
   const projectedTotal = totalScore + state.score;
   
-    victoryCopyEl.hidden = false;
-    victoryCopyEl.innerHTML = `
-      <table class="victory-info">
-        <tbody>
-        <tr><th>Liga</th><td>${leagueName}</td></tr>
-        <tr><th>Nivo</th><td>${currentLevelIndex + 1} / ${levels.length}</td></tr>
-        <tr><th>Parova</th><td>${activePairs.length}</td></tr>
-        <tr><th>Poteza</th><td>${state.moves}</td></tr>
-        <tr><th>Vreme</th><td>${timeText}</td></tr>
-          <tr><th>Poeni</th><td>${state.score}</td></tr>
-          <tr><th>Ukupno</th><td>${projectedTotal}</td></tr>
-        </tbody>
-      </table>
-    `;
+  victoryCopyEl.hidden = false;
+  victoryCopyEl.innerHTML = `
+    <table class="victory-info">
+      <tbody>
+      <tr><th>Liga</th><td>${leagueName}</td></tr>
+      <tr><th>Nivo</th><td>${currentLevelIndex + 1} / ${levels.length}</td></tr>
+      <tr><th>Parova</th><td>${activePairs.length}</td></tr>
+      <tr><th>Poteza</th><td>${state.moves}</td></tr>
+      <tr><th>Vreme</th><td>${timeText}</td></tr>
+        <tr><th>Poeni</th><td>${state.score}</td></tr>
+        <tr><th>Ukupno</th><td>${projectedTotal}</td></tr>
+      </tbody>
+    </table>
+  `;
   
   nextLevelBtn.hidden = isLastLevel;
 
@@ -347,7 +451,11 @@ function revealVictory() {
 function checkForWin() {
   if (state.matches === activePairs.length) {
     stopTimer();
-    setTimeout(revealVictory, 2000);
+    const isLastLevel = currentLevelIndex === levels.length - 1;
+    setTimeout(() => {
+      playVictorySound(isLastLevel);
+      revealVictory();
+    }, 2000);
   }
 }
 
@@ -362,6 +470,7 @@ function handleMatchSuccess() {
   state.second.classList.add("matched");
   state.first.classList.add("hit");
   state.second.classList.add("hit");
+  playHitSound();
   setTimeout(() => {
     state.first?.classList.remove("hit");
     state.second?.classList.remove("hit");
@@ -375,6 +484,7 @@ function handleMatchSuccess() {
 function handleMatchFail() {
   state.first.classList.add("miss");
   state.second.classList.add("miss");
+  playMissSound();
   setTimeout(() => {
     state.first.classList.remove("flipped");
     state.second.classList.remove("flipped");
@@ -515,6 +625,22 @@ reshuffleButtons.forEach((button) => {
   button.addEventListener("click", () => startGame());
 });
 
+volumeSlider?.addEventListener("input", (e) => {
+  resumeAudioContext();
+  const val = Number(e.target.value);
+  masterVolume = Math.min(1, Math.max(0, val / 100));
+  if (masterVolume > 0 && muted) {
+    muted = false;
+  }
+  updateAudioUi();
+});
+
+muteBtn?.addEventListener("click", () => {
+  resumeAudioContext();
+  muted = !muted;
+  updateAudioUi();
+});
+
 leagueButtons.forEach((button) => {
   button.addEventListener("click", () => setLeague(button.dataset.league));
 });
@@ -583,4 +709,5 @@ closePopupBtn?.addEventListener("click", () => {
   victoryEl.hidden = true;
 });
 
+updateAudioUi();
 startGame({ resetHistory: true });
