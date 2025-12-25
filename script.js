@@ -279,6 +279,7 @@ function revealVictory() {
   const leagueName = leagues[activeLeague]?.name ?? "Liga";
   const level = levels[currentLevelIndex];
   const isLastLevel = currentLevelIndex === levels.length - 1;
+  if (closePopupBtn) closePopupBtn.hidden = !isLastLevel;
   levelCompleteScore = state.score;
   levelHistory[currentLevelIndex] = {
     level: currentLevelIndex + 1,
@@ -430,6 +431,7 @@ function startGame(options = {}) {
   if (resetHistory) {
     levelHistory.length = 0;
   }
+  if (closePopupBtn) closePopupBtn.hidden = true;
   levelCompleteScore = 0;
   resetState();
   victoryEl.hidden = true;
