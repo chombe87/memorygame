@@ -161,6 +161,8 @@ const victoryCopyEl = document.querySelector("[data-victory-copy]");
 const nextLevelBtn = document.querySelector("[data-next-level]");
 const closePopupBtn = document.querySelector("[data-close-popup]");
 
+const BASE_SCORE = 10000;
+
 const levels = [
   { cols: 2, rows: 2 },
   { cols: 3, rows: 2 },
@@ -212,17 +214,20 @@ function shuffleInPlace(array) {
   return array;
 }
 
-function formatTime(totalSeconds) {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+function formatTimeMs(totalMs) {
+  const safeMs = Math.max(0, Math.floor(totalMs));
+  const minutes = Math.floor(safeMs / 60000);
+  const seconds = Math.floor((safeMs % 60000) / 1000);
+  const ms = safeMs % 1000;
+  return `${minutes}:${String(seconds).padStart(2, "0")}.${String(ms).padStart(3, "0")}`;
 }
 
 function stopTimer() {
   if (state.timerId) {
-    clearInterval(state.timerId);
+    cancelAnimationFrame(state.timerId);
     state.timerId = null;
   }
+  state.started = false;
 }
 
 function resetState() {
@@ -234,7 +239,8 @@ function resetState() {
     lock: false,
     moves: 0,
     matches: 0,
-    time: 0,
+    timeMs: 0,
+    startTimestamp: null,
     timerId: null,
     started: false,
     score: 0
@@ -245,7 +251,7 @@ function resetState() {
 function updateHud() {
   movesEl.textContent = state.moves;
   matchesEl.textContent = `${state.matches} / ${activePairs.length}`;
-  timerEl.textContent = formatTime(state.time);
+  timerEl.textContent = formatTimeMs(state.timeMs);
   levelEl.textContent = `${currentLevelIndex + 1} / ${levels.length}`;
   state.score = computeScore();
   scoreEl.textContent = state.score;
@@ -281,7 +287,7 @@ function createCardElement(card) {
 }
 
 function revealVictory() {
-  const timeText = formatTime(state.time);
+  const timeText = formatTimeMs(state.timeMs);
   const leagueName = leagues[activeLeague]?.name ?? "Liga";
   const level = levels[currentLevelIndex];
   const isLastLevel = currentLevelIndex === levels.length - 1;
@@ -291,11 +297,27 @@ function revealVictory() {
     level: currentLevelIndex + 1,
     layout: `${level.cols}x${level.rows}`,
     moves: state.moves,
-    time: formatTime(state.time),
+    time: formatTimeMs(state.timeMs),
     score: state.score
   };
   victoryTitleEl.textContent = "Sve je povezano!";
-  victoryCopyEl.textContent = `Liga: ${leagueName}. Nivo ${currentLevelIndex + 1} (${level.cols}x${level.rows}). Spojio si ${activePairs.length} parova u ${state.moves} poteza za ${timeText}. Poeni: ${state.score}.`;
+  const projectedTotal = totalScore + state.score;
+  
+    victoryCopyEl.hidden = false;
+    victoryCopyEl.innerHTML = `
+      <table class="victory-info">
+        <tbody>
+        <tr><th>Liga</th><td>${leagueName}</td></tr>
+        <tr><th>Nivo</th><td>${currentLevelIndex + 1} / ${levels.length}</td></tr>
+        <tr><th>Parova</th><td>${activePairs.length}</td></tr>
+        <tr><th>Poteza</th><td>${state.moves}</td></tr>
+        <tr><th>Vreme</th><td>${timeText}</td></tr>
+          <tr><th>Poeni</th><td>${state.score}</td></tr>
+          <tr><th>Ukupno</th><td>${projectedTotal}</td></tr>
+        </tbody>
+      </table>
+    `;
+  
   nextLevelBtn.hidden = isLastLevel;
 
   if (isLastLevel && summaryEl && summaryRowsEl && summaryTotalEl) {
@@ -365,10 +387,11 @@ function handleMatchFail() {
 function computeScore() {
   const idealMoves = Math.max(1, activePairs.length);
   const movePenalty = Math.max(0, state.moves - idealMoves);
-  const moveComponent = Math.max(0, 900 - movePenalty * 60);
-  const timeComponent = Math.max(0, 1100 - state.time * 8);
-  const progressBonus = state.matches * 45;
-  return Math.max(0, Math.round(moveComponent + timeComponent + progressBonus));
+  const timePenalty = state.timeMs * 0.08; // 60s -> ~4800 poena penala
+  const movePenaltyScore = movePenalty * 350;
+  const progressBonus = state.matches * 60;
+  const raw = BASE_SCORE - timePenalty - movePenaltyScore + progressBonus;
+  return Math.max(0, Math.round(raw));
 }
 
 function pickActivePairs() {
@@ -409,10 +432,14 @@ function handleFlip(cardEl) {
 
   if (!state.started) {
     state.started = true;
-    state.timerId = setInterval(() => {
-      state.time += 1;
-      timerEl.textContent = formatTime(state.time);
-    }, 1000);
+    state.startTimestamp = performance.now();
+    const tick = () => {
+      if (!state.started) return;
+      state.timeMs = performance.now() - state.startTimestamp;
+      timerEl.textContent = formatTimeMs(state.timeMs);
+      state.timerId = requestAnimationFrame(tick);
+    };
+    state.timerId = requestAnimationFrame(tick);
   }
 
   cardEl.classList.add("flipped");
@@ -506,7 +533,7 @@ simulateWinBtn?.addEventListener("click", () => {
       level: i + 1,
       layout: `${levels[i].cols}x${levels[i].rows}`,
       moves,
-      time: formatTime(timeSec),
+      time: formatTimeMs(timeSec * 1000),
       score
     };
     totalScore += score;
@@ -540,7 +567,7 @@ simulateWinBtn?.addEventListener("click", () => {
   });
   state.matches = matched;
   state.moves = 0;
-  state.time = 0;
+  state.timeMs = 0;
   updateHud();
 });
 

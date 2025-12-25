@@ -394,10 +394,30 @@ h1 {
   margin: 0 auto 12px;
 }
 
+.victory-info {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 6px;
+  font-size: 13px;
+  color: #e2ecff;
+}
+
+.victory-info th,
+.victory-info td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.victory-info th {
+  width: 50%;
+  color: #b8c7de;
+  font-weight: 700;
+}
+
 .summary {
   margin: 10px 0 14px;
-  max-height: 260px;
-  overflow: auto;
+  overflow: visible;
 }
 
 .summary-table {
