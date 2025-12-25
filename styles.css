@@ -295,8 +295,9 @@ h1 {
   background: var(--card);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
+  text-align: center;
 }
 
 .card-back .label {
@@ -306,6 +307,7 @@ h1 {
   color: #f5f8ff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
   word-break: break-word;
+  width: 100%;
 }
 
 .card-back .media {
@@ -314,6 +316,7 @@ h1 {
   height: 58px;
   object-fit: contain;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+  margin: 0 auto;
 }
 
 .card-back .stadium {
@@ -323,6 +326,7 @@ h1 {
   object-fit: cover;
   border: 1px solid var(--border);
   background: #0d1828;
+  align-self: stretch;
 }
 
 .card[data-kind="club"] .card-back {
@@ -560,6 +564,17 @@ h1 {
   .card-back .label {
     font-size: 9px;
   }
+
+  .card-back .media {
+    width: 52px;
+    height: 52px;
+  }
+
+  /* Veci grb na nivou 1 (2x2) na telefonu */
+  .board[data-cols="2"] .card-back .media {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 /* Tighter layout on small screens and high column counts */
@@ -617,6 +632,17 @@ h1 {
   .tag::before {
     width: 8px;
     height: 8px;
+  }
+
+  .card-back .media {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Veci grb na nivou 1 (2x2) na malim ekranima */
+  .board[data-cols="2"] .card-back .media {
+    width: 64px;
+    height: 64px;
   }
 }
 
