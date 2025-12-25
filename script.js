@@ -60,6 +60,10 @@ const leagues = {
     logo: "assets/leagues/seriea.png",
     tagLeft: "Klub",
     tagRight: "Stadion",
+    conflicts: [
+      ["Inter", "Milan"],
+      ["Lazio", "Roma"]
+    ],
     pairs: [
       { club: "Atalanta", crest: "assets/crests/atalanta.png", stadium: "Gewiss Stadium", stadiumImage: "assets/stadiums/atalanta.jpg" },
       { club: "Bologna", crest: "assets/crests/bologna.png", stadium: "Stadio Renato Dall'Ara", stadiumImage: "assets/stadiums/bologna.jpg" },
@@ -162,7 +166,9 @@ const levels = [
   { cols: 3, rows: 2 },
   { cols: 4, rows: 3 },
   { cols: 4, rows: 4 },
-  { cols: 5, rows: 4 }
+  { cols: 5, rows: 4 },
+  { cols: 6, rows: 5 },
+  { cols: 6, rows: 6 }
 ];
 
 let activePairs = [];
@@ -370,7 +376,31 @@ function pickActivePairs() {
   const level = levels[currentLevelIndex];
   if (!league || !level) return [];
   const neededPairs = Math.min((level.cols * level.rows) / 2, league.pairs.length);
-  return shuffleInPlace([...league.pairs]).slice(0, neededPairs);
+  const conflicts = league.conflicts || [];
+  const deck = shuffleInPlace([...league.pairs]);
+  const selected = [];
+  const chosenClubs = new Set();
+
+  for (const pair of deck) {
+    if (selected.length >= neededPairs) break;
+    const conflictGroup = conflicts.find((group) => group.includes(pair.club));
+    const conflictHit = conflictGroup?.some((club) => chosenClubs.has(club));
+    if (conflictHit) continue;
+    selected.push(pair);
+    chosenClubs.add(pair.club);
+  }
+
+  // Fallback: if somehow not enough picked (shouldn't happen), fill remaining ignoring conflicts.
+  if (selected.length < neededPairs) {
+    for (const pair of deck) {
+      if (selected.length >= neededPairs) break;
+      if (chosenClubs.has(pair.club)) continue;
+      selected.push(pair);
+      chosenClubs.add(pair.club);
+    }
+  }
+
+  return selected.slice(0, neededPairs);
 }
 
 function handleFlip(cardEl) {
