@@ -93,6 +93,28 @@ h1 {
   gap: 8px;
 }
 
+.jump-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+
+.jump-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.jump-row select {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
 .sound-control .label {
   margin: 0;
   color: var(--muted);

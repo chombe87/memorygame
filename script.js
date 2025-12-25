@@ -149,6 +149,8 @@ const scoreEl = document.querySelector("[data-score]");
 const totalScoreEl = document.querySelector("[data-total-score]");
 const volumeSlider = document.querySelector("[data-volume]");
 const muteBtn = document.querySelector("[data-mute]");
+const jumpLevelSelect = document.querySelector("[data-level-jump]");
+const jumpLevelBtn = document.querySelector("[data-level-jump-btn]");
 const summaryEl = document.querySelector("[data-summary]");
 const summaryRowsEl = document.querySelector("[data-summary-rows]");
 const summaryTotalEl = document.querySelector("[data-summary-total]");
@@ -205,6 +207,21 @@ function updateAudioUi() {
     const val = Math.round(masterVolume * 100);
     volumeSlider.value = String(val);
   }
+  if (jumpLevelSelect) {
+    jumpLevelSelect.value = String(currentLevelIndex + 1);
+  }
+}
+
+function populateLevelSelect() {
+  if (!jumpLevelSelect) return;
+  jumpLevelSelect.innerHTML = "";
+  levels.forEach((lvl, idx) => {
+    const opt = document.createElement("option");
+    opt.value = String(idx + 1);
+    opt.textContent = `${idx + 1} (${lvl.cols}x${lvl.rows})`;
+    jumpLevelSelect.appendChild(opt);
+  });
+  jumpLevelSelect.value = String(currentLevelIndex + 1);
 }
 
 function resumeAudioContext() {
@@ -599,6 +616,7 @@ function startGame(options = {}) {
   resetState();
   victoryEl.hidden = true;
   if (summaryEl) summaryEl.hidden = true;
+  populateLevelSelect();
   activePairs = pickActivePairs();
   const level = levels[currentLevelIndex];
   if (level) {
@@ -608,6 +626,7 @@ function startGame(options = {}) {
   }
   updateHud();
   buildBoard();
+  updateAudioUi();
 }
 
 resetButtons.forEach((button) => {
@@ -693,6 +712,46 @@ simulateWinBtn?.addEventListener("click", () => {
   state.moves = 0;
   state.timeMs = 0;
   updateHud();
+});
+
+jumpLevelBtn?.addEventListener("click", () => {
+  const target = parseInt(jumpLevelSelect?.value || "1", 10) || 1;
+  const targetIndex = Math.min(levels.length - 1, Math.max(0, target - 1));
+  currentLevelIndex = targetIndex;
+  totalScore = 0;
+  levelCompleteScore = 0;
+  levelHistory.length = 0;
+  resetState();
+  victoryEl.hidden = true;
+  if (summaryEl) summaryEl.hidden = true;
+  activePairs = pickActivePairs();
+  const level = levels[currentLevelIndex];
+  if (level) {
+    boardEl.style.setProperty("--cols", level.cols);
+    boardEl.dataset.cols = String(level.cols);
+    boardEl.dataset.rows = String(level.rows);
+  }
+  buildBoard();
+
+  const cards = Array.from(boardEl.querySelectorAll(".card"));
+  const pairGroups = cards.reduce((acc, card) => {
+    const pid = card.dataset.pairId;
+    (acc[pid] = acc[pid] || []).push(card);
+    return acc;
+  }, {});
+  const pairIds = Object.keys(pairGroups);
+  const leaveUnmatched = pairIds[pairIds.length - 1];
+  let matched = 0;
+  pairIds.forEach((pid) => {
+    if (pid === leaveUnmatched) return;
+    pairGroups[pid].forEach((card) => card.classList.add("matched", "flipped"));
+    matched += 1;
+  });
+  state.matches = matched;
+  state.moves = 0;
+  state.timeMs = 0;
+  updateHud();
+  updateAudioUi();
 });
 
 nextLevelBtn?.addEventListener("click", () => {
