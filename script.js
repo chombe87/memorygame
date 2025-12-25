@@ -173,7 +173,7 @@ const levels = [
   { cols: 4, rows: 4 },
   { cols: 5, rows: 4 },
   { cols: 6, rows: 5 },
-  { cols: 6, rows: 6 }
+  //{ cols: 6, rows: 6 }
 ];
 
 let activePairs = [];
